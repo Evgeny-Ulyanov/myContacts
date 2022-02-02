@@ -1,5 +1,7 @@
 package com.example.mycontacts;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,13 @@ import java.util.ArrayList;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder>{
 
-    private ArrayList<Contact> contactArrayList;
+    private ArrayList<Contact> contactArrayList = new ArrayList<>();
+    private MainActivity mainActivity;
+
+    public ContactAdapter(ArrayList<Contact> contactArrayList, MainActivity mainActivity){
+        this.contactArrayList = contactArrayList;
+        this.mainActivity = mainActivity;
+    }
 
     public void setContactArrayList(ArrayList<Contact> contactArrayList) {
         this.contactArrayList = contactArrayList;
@@ -29,7 +37,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ContactViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         Contact contact = contactArrayList.get(position);
 
@@ -38,6 +46,12 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         holder.emailTextView.setText(contact.getEmail());
         holder.phoneNumberTextView.setText(contact.getPhoneNumber());
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainActivity.addAndEditContact(true, contact, position);
+            }
+        });
     }
 
     @Override
